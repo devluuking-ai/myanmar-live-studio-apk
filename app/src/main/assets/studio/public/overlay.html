@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Live Overlay</title>
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: system-ui, "Myanmar Text", sans-serif; background: #0b0b14; color: #fff; height: 100dvh; overflow: hidden; }
+  #stage { position: relative; height: 100dvh; width: 100vw; display: flex; flex-direction: column; background: linear-gradient(180deg, #1b1440, #3a1c5c 55%, #12082a); }
+  body.wide #stage { aspect-ratio: 16/9; height: auto; max-height: 100dvh; margin: auto; }
+  header { padding: 10px 14px 6px; text-align: center; }
+  header h1 { font-size: clamp(20px, 4.5vw, 34px); text-shadow: 0 2px 10px #000; }
+  header p { font-size: clamp(12px, 2.4vw, 16px); opacity: .92; margin-top: 2px; }
+  #goalbar { margin: 6px 14px; background: rgba(255,255,255,.14); border-radius: 999px; height: 22px; position: relative; overflow: hidden; }
+  #goalfill { height: 100%; width: 0%; background: linear-gradient(90deg, #ffb300, #ff5e8a); transition: width .5s; }
+  #goalbar span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; text-shadow: 0 1px 3px #000; }
+  #counters { display: flex; gap: 8px; justify-content: center; font-size: 13px; padding: 2px 8px; flex-wrap: wrap; }
+  #counters b { background: rgba(0,0,0,.35); padding: 3px 10px; border-radius: 999px; }
+  #game { flex: 1; position: relative; overflow: hidden; padding: 8px 14px; }
+  #feed { max-height: 22dvh; overflow: hidden; padding: 6px 14px 10px; font-size: 13px; display: flex; flex-direction: column; gap: 3px; }
+  #feed div { background: rgba(0,0,0,.32); border-radius: 10px; padding: 3px 9px; align-self: flex-start; max-width: 92%; }
+  #feed b { color: #ffd54f; }
+  #banner { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; pointer-events: none; z-index: 5; }
+  #banner div { background: rgba(0,0,0,.72); border: 2px solid #ffd54f; border-radius: 18px; padding: 16px 22px; font-size: clamp(18px, 4vw, 30px); font-weight: 800; text-align: center; }
+  #donors { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,.42); border-radius: 12px; padding: 8px 10px; font-size: 12px; z-index: 4; min-width: 130px; }
+  #donors h3 { font-size: 12px; color: #ffd54f; margin-bottom: 4px; }
+  .rope { margin-top: 8dvh; }
+  .rope .bar { height: 26px; border-radius: 999px; background: linear-gradient(90deg, #ef5350 50%, #42a5f5 50%); position: relative; }
+  .rope .flag { position: absolute; top: -16px; font-size: 26px; transform: translateX(-50%); transition: left .4s; }
+  .teams { display: flex; justify-content: space-between; margin-top: 10px; }
+  .team { width: 48%; }
+  .team h2 { font-size: 18px; } .team .score { font-size: 30px; font-weight: 900; }
+  .avatars { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .av { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; border: 2px solid #fff8; background: #6a4cff; position: relative; }
+  .av small { position: absolute; bottom: -14px; font-size: 9px; white-space: nowrap; max-width: 54px; overflow: hidden; }
+  .lane { display: flex; align-items: center; gap: 8px; margin: 7px 0; font-size: 13px; }
+  .lane .track { flex: 1; height: 30px; background: rgba(255,255,255,.12); border-radius: 999px; position: relative; }
+  .lane .runner { position: absolute; top: 1px; font-size: 24px; transition: left .4s; }
+  .pagoda { text-align: center; font-size: clamp(70px, 18vw, 130px); line-height: 1.05; filter: drop-shadow(0 6px 18px #000a); }
+  .seats { display: flex; flex-wrap: wrap; gap: 14px 8px; justify-content: center; margin-top: 16px; }
+  .big { font-size: clamp(20px, 5vw, 34px); font-weight: 900; text-align: center; margin-top: 4dvh; }
+  .choices { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+  .choices div { background: rgba(255,255,255,.16); padding: 8px 14px; border-radius: 999px; font-size: 16px; }
+  .hpbar { height: 24px; background: rgba(255,255,255,.15); border-radius: 999px; overflow: hidden; margin-top: 12px; }
+  .hpbar div { height: 100%; background: linear-gradient(90deg, #e53935, #fb8c00); transition: width .3s; }
+  .regionbar { display: flex; align-items: center; gap: 8px; margin: 4px 0; font-size: 13px; }
+  .regionbar .track { flex: 1; height: 16px; background: rgba(255,255,255,.12); border-radius: 999px; overflow: hidden; }
+  .regionbar .fill { height: 100%; background: #26c6da; }
+  .climbwrap { position: relative; height: 46dvh; background: linear-gradient(160deg, transparent 55%, #4e342e 56%); border-radius: 14px; overflow: hidden; }
+  .climber { position: absolute; font-size: 22px; transition: all .4s; }
+  #audioBtn { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 9; background: #ffb300; color: #201600; border: 0; border-radius: 999px; padding: 12px 22px; font-size: 16px; font-weight: 800; }
+  .night #stage { background: linear-gradient(180deg, #050510, #141038 55%, #09051f); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <header><h1 id="title">Live</h1><p id="how"></p></header>
+  <div id="goalbar"><div id="goalfill"></div><span id="goaltext"></span></div>
+  <div id="counters"></div>
+  <div id="game"></div>
+  <div id="donors"></div>
+  <div id="banner"><div id="bannerText"></div></div>
+  <div id="feed"></div>
+</div>
+<button id="audioBtn">အသံဖွင့်ရန်</button>
+<script>
+const roomId = location.pathname.startsWith('/o/') ? location.pathname.split('/').pop() : 'main';
+const params = new URLSearchParams(location.search);
+if (params.get('ratio') === '16:9') document.body.classList.add('wide');
+const $ = id => document.getElementById(id);
+let state = null, audioCtx = null, bgmTimer = null;
+const RACE_EMOJI = { race: '🏃', car: '🏎️', horse: '🐴', boat: '🚣', marble: '🔮' };
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const initial = n => esc([...String(n || '?')][0] || '?');
+const avHtml = v => `<div class="av" title="${esc(v.name)}">${v.avatar ? `<img src="${esc(v.avatar)}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">` : initial(v.name)}<small>${esc(v.name)}</small></div>`;
+
+function speak(text) {
+  if (!text || !state?.tts) return;
+  if (window.AndroidBridge?.speak) { AndroidBridge.speak(text); return; }
+  if (!window.speechSynthesis) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'my-MM';
+  const v = speechSynthesis.getVoices().find(x => x.lang?.startsWith('my'));
+  if (v) u.voice = v;
+  u.rate = 1; speechSynthesis.speak(u);
+}
+function tone(freq, dur = .25, type = 'sine', vol = .18, when = 0) {
+  if (!audioCtx) return;
+  const t = audioCtx.currentTime + when, o = audioCtx.createOscillator(), g = audioCtx.createGain();
+  o.type = type; o.frequency.value = freq; g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+  o.connect(g).connect(audioCtx.destination); o.start(t); o.stop(t + dur);
+}
+function noise(dur = .3, vol = .2) {
+  if (!audioCtx) return;
+  const len = audioCtx.sampleRate * dur, buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate), d = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  const src = audioCtx.createBufferSource(); src.buffer = buf;
+  const g = audioCtx.createGain(); g.gain.setValueAtTime(vol, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(.001, audioCtx.currentTime + dur);
+  src.connect(g).connect(audioCtx.destination); src.start();
+}
+function playSound(name) {
+  if (!audioCtx) return;
+  if (name === 'gong') { tone(196, 1.6, 'sine', .3); tone(392, 1.2, 'sine', .12); }
+  else if (name === 'clap') { noise(.12, .3); setTimeout(() => noise(.12, .3), 140); setTimeout(() => noise(.15, .3), 290); }
+  else if (name === 'fanfare') [523, 659, 784, 1047].forEach((f, i) => tone(f, .35, 'triangle', .2, i * .12));
+  else if (name === 'splash') noise(.5, .18);
+  else if (name === 'bell') tone(880, .8, 'sine', .22);
+}
+function setBgm(on) {
+  clearInterval(bgmTimer); bgmTimer = null;
+  if (!on || !audioCtx) return;
+  const notes = [262, 294, 330, 392, 440, 392, 330, 294]; let i = 0;
+  const step = () => tone(notes[i++ % notes.length], .5, 'triangle', .06);
+  step(); bgmTimer = setInterval(step, 520);
+}
+$('audioBtn').onclick = () => { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); $('audioBtn').remove(); if (state?.bgm) setBgm(true); speak('အသံ ဖွင့်ပြီးပါပြီ'); };
+
+function banner(text, ms = 3500) { $('bannerText').textContent = text; $('banner').style.display = 'flex'; setTimeout(() => $('banner').style.display = 'none', ms); }
+
+function render() {
+  if (!state) return;
+  const g = state.games.find(x => x.id === state.game) || {};
+  $('title').textContent = g.label || 'Live';
+  $('how').textContent = g.how || '';
+  const pct = Math.min(100, state.goal.target ? state.goal.current / state.goal.target * 100 : 0);
+  $('goalfill').style.width = pct + '%';
+  $('goaltext').textContent = `${state.goal.label}: ${state.goal.current.toLocaleString()} / ${state.goal.target.toLocaleString()}`;
+  $('counters').innerHTML = `<b>👁 ${state.viewers.length}</b><b>❤️ ${state.likes.toLocaleString()}</b><b>➕ ${state.follows}</b><b>↗ ${state.shares}</b><b>${state.tiktok.status === 'connected' ? 'TikTok ချိတ်ပြီး' : 'TikTok ' + esc(state.tiktok.status)}</b>`;
+  $('donors').innerHTML = '<h3>ကုသိုလ်ရှင် ထိပ်ဆုံး</h3>' + (state.donors.length ? state.donors.map((d, i) => `<div>${i + 1}. ${esc(d.name)} — ${d.gifts.toLocaleString()}</div>`).join('') : '<div>မရှိသေးပါ</div>');
+  $('feed').innerHTML = state.feed.slice(-6).map(f => `<div><b>${esc(f.name)}</b> ${esc(f.text)}</div>`).join('');
+  const hour = new Date().getHours();
+  document.body.classList.toggle('night', hour < 6 || hour >= 18);
+  const el = $('game');
+  const teamA = state.viewers.filter(v => v.team === 'a'), teamB = state.viewers.filter(v => v.team === 'b');
+  if (state.game === 'tug' || state.game === 'thingyan') {
+    const total = state.scores.a + state.scores.b, pos = total ? 50 + (state.scores.b - state.scores.a) / total * 45 : 50;
+    el.innerHTML = `<div class="rope"><div class="bar"><div class="flag" style="left:${pos}%">${state.game === 'thingyan' ? '💦' : '🚩'}</div></div>
+      <div class="teams"><div class="team"><h2>အနီ (1)</h2><div class="score">${state.scores.a}</div><div class="avatars">${teamA.slice(0, 12).map(avHtml).join('')}</div></div>
+      <div class="team" style="text-align:right"><h2>အပြာ (2)</h2><div class="score">${state.scores.b}</div><div class="avatars" style="justify-content:flex-end">${teamB.slice(0, 12).map(avHtml).join('')}</div></div></div></div>`;
+  } else if (RACE_EMOJI[state.game]) {
+    el.innerHTML = state.lanes.map(l => `<div class="lane"><span style="width:52px">${esc(l.name)}</span><div class="track"><div class="runner" style="left:calc(${Math.min(94, l.pos / 60 * 94)}% )">${RACE_EMOJI[state.game]}</div></div><b>${l.pos}</b></div>`).join('') + `<div class="avatars" style="margin-top:14px">${state.viewers.slice(0, 14).map(avHtml).join('')}</div>`;
+  } else if (state.game === 'temple' || state.game === 'pagoda') {
+    el.innerHTML = `<div class="pagoda">🛕</div><div class="big" style="margin-top:2px">${hour < 6 || hour >= 18 ? 'ည ဘုရားဖူး' : 'နေ့ ဘုရားဖူး'}</div><div class="seats">${state.viewers.slice(0, 24).map(avHtml).join('') || 'Comment ရေးပြီး ဝင်ထိုင်ပါ'}</div>`;
+  } else if (state.game === 'quiz') {
+    el.innerHTML = `<div class="big">${esc(state.quiz.question)}</div><div class="choices">${state.quiz.choices.map(c => `<div>${esc(c)}</div>`).join('')}</div>${state.quiz.winner ? `<div class="big">🏆 ${esc(state.quiz.winner)}</div>` : ''}`;
+  } else if (state.game === 'number') {
+    el.innerHTML = `<div class="big">1 – 100 ဂဏန်း ခန့်မှန်းပါ</div><div class="big" style="font-size:20px">${esc(state.number.lastHint || '')}</div>${state.number.best ? `<div class="big" style="font-size:20px">အနီးဆုံး: ${esc(state.number.best.name)} — ${state.number.best.guess}</div>` : ''}`;
+  } else if (state.game === 'climb') {
+    const max = Math.max(10, ...state.viewers.map(v => v.climb));
+    el.innerHTML = `<div class="climbwrap">${state.viewers.slice(0, 16).map((v, i) => `<div class="climber" style="left:${8 + i * 5.5}%;bottom:${8 + v.climb / max * 70}%">🧗<span style="font-size:11px">${esc(v.name)}</span></div>`).join('')}</div>`;
+  } else if (state.game === 'penalty') {
+    el.innerHTML = `<div class="big">⚽ ဘယ် · လယ် · ညာ</div><div class="big" style="font-size:22px">ဂိုး ${state.penalty.goals} — ဖမ်းမိ ${state.penalty.saves}</div><div class="big" style="font-size:18px">${esc(state.penalty.last)}</div>`;
+  } else if (state.game === 'boss') {
+    el.innerHTML = `<div class="pagoda">👹</div><div class="hpbar"><div style="width:${state.boss.max ? state.boss.hp / state.boss.max * 100 : 0}%"></div></div><div class="big" style="font-size:22px">HP ${state.boss.hp} / ${state.boss.max}</div><div class="avatars">${state.viewers.slice(0, 14).map(avHtml).join('')}</div>`;
+  } else if (state.game === 'peacock') {
+    el.innerHTML = `<div class="pagoda">🦚</div><div class="big" style="font-size:24px">${'🪶'.repeat(Math.min(24, state.feathers))}</div><div class="big" style="font-size:18px">အမွှေး ${state.feathers} / 24</div>`;
+  } else if (state.game === 'region') {
+    const max = Math.max(1, ...Object.values(state.regions));
+    el.innerHTML = Object.entries(state.regions).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([r, n]) => `<div class="regionbar"><span style="width:92px">${esc(r)}</span><div class="track"><div class="fill" style="width:${n / max * 100}%"></div></div><b>${n}</b></div>`).join('');
+  } else if (state.game === 'survival') {
+    el.innerHTML = `<div class="big" style="font-size:22px">ကျန်ရှိသူ ${state.viewers.filter(v => v.alive).length} ယောက်</div><div class="seats">${state.viewers.slice(0, 24).map(v => `<div style="opacity:${v.alive ? 1 : .3}">${avHtml(v)}</div>`).join('')}</div>`;
+  }
+}
+
+function onFx(f) {
+  if (f.say) speak(f.say);
+  if (f.kind === 'gift') { banner(`🎁 ${f.name} — ${f.gift}`); playSound('bell'); }
+  else if (f.kind === 'follow') banner(`➕ ${f.name} Follow လုပ်လိုက်ပြီ`);
+  else if (f.kind === 'milestone') { banner(`❤️ Like ${f.likes.toLocaleString()} ပြည့်ပြီ`); playSound('fanfare'); }
+  else if (f.kind === 'goalReached') { banner('🎉 ပန်းတိုင် ပြည့်ပြီ'); playSound('fanfare'); }
+  else if (f.kind === 'quizWin') { banner(`🏆 ${f.name} မှန်ပြီ`); playSound('fanfare'); }
+  else if (f.kind === 'numberWin') { banner(`🏆 ${f.name} ဂဏန်းမှန်ပြီ`); playSound('fanfare'); }
+  else if (f.kind === 'raceWin') { banner(`🏆 ${f.name} အနိုင်ရပြီ`); playSound('fanfare'); }
+  else if (f.kind === 'bossDown') { banner('🎉 Boss ကို အနိုင်ရပြီ'); playSound('fanfare'); }
+  else if (f.kind === 'goal') { banner(`⚽ ${f.name} ဂိုးသွင်းပြီ`); playSound('clap'); }
+  else if (f.kind === 'eliminated') banner(`${f.name} ထွက်ရပြီ`);
+  else if (f.kind === 'sound') playSound(f.sound);
+  else if (f.kind === 'bgm') setBgm(f.on);
+}
+
+const es = new EventSource(`/api/rooms/${encodeURIComponent(roomId)}/events`);
+es.onmessage = e => { const m = JSON.parse(e.data); if (m.type === 'state') { state = m.state; render(); } else if (m.type === 'fx') onFx(m.fx); };
+</script>
+</body>
+</html>

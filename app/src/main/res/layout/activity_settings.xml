@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#120905">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Stream Keys — လွှင့်မယ့် platform ကိုဖွင့်ပြီး key ထည့်ပါ"
+            android:textColor="#FFD98A"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Key တွေကို ဖုန်းထဲမှာပဲ သိမ်းထားပါတယ်။ ဘယ်သူ့ကိုမှ မပြပါနဲ့။"
+            android:textColor="#C9AD84"
+            android:textSize="13sp" />
+
+        <!-- YouTube -->
+        <Switch
+            android:id="@+id/ytSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="🔴 YouTube"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/ytServer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Server URL"
+            android:inputType="textUri"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/ytKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="YouTube Stream Key (YouTube Studio → Go Live → Stream)"
+            android:inputType="textPassword"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888" />
+
+        <!-- Facebook -->
+        <Switch
+            android:id="@+id/fbSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="🔵 Facebook"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/fbServer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Server URL"
+            android:inputType="textUri"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/fbKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Facebook Stream Key (Live Producer → Streaming software)"
+            android:inputType="textPassword"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888" />
+
+        <!-- TikTok -->
+        <Switch
+            android:id="@+id/ttSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="⚫ TikTok (RTMP key ရမှ)"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/ttServer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="TikTok Server URL (Cast to PC မှာပြတဲ့ URL)"
+            android:inputType="textUri"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/ttKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="TikTok Stream Key (session တိုင်း အသစ်ယူရပါတယ်)"
+            android:inputType="textPassword"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/ttUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="TikTok username (@ မပါ)"
+            android:inputType="text"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="Video bitrate (kbps) — platform တစ်ခုချင်းစီအတွက်"
+            android:textColor="#FFD98A"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/bitrate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="1800"
+            android:inputType="number"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Platform ၃ ခုလုံး တပြိုင်နက်လွှင့်ရင် upload speed ၃ ဆ လိုပါတယ်။ လိုင်းနှေးရင် 1200 လောက်ထားပါ။"
+            android:textColor="#C9AD84"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="သိမ်းရန်" />
+    </LinearLayout>
+</ScrollView>

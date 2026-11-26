@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>သုံးနည်း — Myanmar Live Studio</title>
+<style>
+  * { box-sizing: border-box; } body { font-family: system-ui, "Myanmar Text", sans-serif; background: #12101f; color: #f4f1ff; margin: 0; padding: 20px; }
+  .wrap { max-width: 760px; margin: auto; } h1 { font-size: 26px; } h2 { color: #ffd54f; margin-top: 24px; }
+  code, pre { background: #0c0a18; border: 1px solid #38305e; border-radius: 8px; padding: 2px 6px; }
+  pre { padding: 12px; overflow-x: auto; } li { margin: 6px 0; line-height: 1.6; } a { color: #9fd0ff; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>သုံးနည်း လမ်းညွှန်</h1>
+  <h2>Server စတင်ရန် (တစ်ခါပဲ setup)</h2>
+  <p>Node 22+ လိုပါတယ်။ <code>node -v</code> နဲ့ စစ်ပါ။</p>
+  <pre>npm install
+npm start</pre>
+  <p>ပြီးရင် browser မှာ <code>http://localhost:3000/dashboard</code> ဖွင့်ပြီး Room ဖန်တီးပါ။</p>
+  <h2>PC — TikTok LIVE Studio</h2>
+  <ol>
+    <li>Dashboard မှာ Room ဖန်တီးပြီး Overlay Link ကို copy ယူပါ။</li>
+    <li>LIVE Studio → Add source → Link မှာ paste ထည့်ပါ (16:9 ဆိုရင် link နောက်မှာ <code>?ratio=16:9</code>)။</li>
+    <li>Overlay မှာ “အသံဖွင့်ရန်” ကို တစ်ခါ နှိပ်ပါ။</li>
+    <li>Go LIVE လုပ်ပြီး Dashboard မှာ username ထည့် “TikTok ချိတ်မယ်” နှိပ်ပါ။</li>
+  </ol>
+  <h2>OBS / Streamlabs</h2>
+  <ol><li>Browser source ထည့်ပြီး Overlay Link ကို ထည့်ပါ။</li><li>အပေါ်က အဆင့် 3–4 အတိုင်း ဆက်လုပ်ပါ။</li></ol>
+  <h2>ဖုန်းတစ်လုံးတည်း (Termux)</h2>
+  <ol>
+    <li>Termux မှာ <code>pkg install nodejs</code> ပြီးရင် <code>node -v</code> က 22+ ဖြစ်ရပါမယ်။</li>
+    <li>ဒီ folder ထဲမှာ <code>bash start.sh</code> run ပါ (လိုရင် npm install အလိုလို လုပ်ပေးမယ်)။</li>
+    <li>Browser မှာ <code>http://localhost:3000/control</code> ဖွင့်ပြီး၊ tab နောက်တစ်ခုမှာ <code>http://localhost:3000/overlay</code> ဖွင့်၍ “အသံဖွင့်ရန်” နှိပ်ပါ။</li>
+    <li>TikTok → + → LIVE → Mobile gaming → Go LIVE။ ပြီးရင် Overlay tab ကို ရှေ့မှာ ထားပါ။</li>
+    <li>Dashboard မှာ “TikTok ချိတ်မယ်” နှိပ်ပါ။ Control အတွက် ဒုတိယဖုန်း/PC ကနေ <code>http://ဖုန်း-IP:3000/dashboard?room=...</code> ဖွင့်နိုင်ပါတယ် (Wi-Fi တူရမယ်)။</li>
+  </ol>
+  <h2>ဂိမ်းကစားနည်း (ကြည့်သူတွေအတွက်)</h2>
+  <ul>
+    <li>လွန်ဆွဲ: Comment မှာ 1 သို့မဟုတ် 2</li>
+    <li>ဘုရားဖူး: Comment ရေးရင် ခုံနေရာရ၊ Gift ပို့ရင် ပူဇော်မှု</li>
+    <li>ပြိုင်ပွဲများ: Comment / Like နဲ့ ရှေ့တိုး</li>
+    <li>မေးခွန်း: အဖြေမှန်ကို Comment ရေး</li>
+    <li>ဂဏန်း: 1–100 ဂဏန်း Comment ရေး</li>
+    <li>ဒေသပြိုင်: ကိုယ့်ဒေသနာမည် Comment ရေး</li>
+  </ul>
+  <h2>ပြဿနာ ဖြေရှင်းရန်</h2>
+  <ul>
+    <li>TikTok မချိတ်ရင်: LIVE အရင် စတင်ထားလား၊ username မှန်လား (@ မပါ)၊ <code>npm install</code> လုပ်ပြီးလား စစ်ပါ။</li>
+    <li>အသံမထွက်ရင်: Overlay မှာ “အသံဖွင့်ရန်” နှိပ်ထားလား၊ device မှာ မြန်မာ voice ရှိလား စစ်ပါ။</li>
+    <li>ကြည့်သူ မမြင်ရရင်: LIVE က Mobile gaming (screen-share) ဖြစ်ရပါမယ်၊ camera LIVE ဆိုရင် overlay မပေါ်ပါ။</li>
+    <li>Dashboard ကို public internet မှာ မဖွင့်ပါနဲ့ — ကိုယ့် Wi-Fi / ကိုယ့်စက်မှာပဲ သုံးပါ။</li>
+  </ul>
+  <p><a href="/dashboard">Dashboard သို့</a></p>
+</div>
+</body>
+</html>

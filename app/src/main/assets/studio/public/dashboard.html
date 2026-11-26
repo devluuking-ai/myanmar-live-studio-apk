@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard — Myanmar Live Studio</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: system-ui, "Myanmar Text", sans-serif; background: #12101f; color: #f4f1ff; margin: 0; padding: 16px; }
+  .wrap { max-width: 860px; margin: auto; }
+  h1 { font-size: 24px; } h2 { font-size: 17px; margin: 18px 0 8px; color: #ffd54f; }
+  .card { background: #1e1a33; border: 1px solid #38305e; border-radius: 14px; padding: 14px; margin-bottom: 12px; }
+  input, select { padding: 10px; border-radius: 9px; border: 1px solid #4a4275; background: #120e24; color: #fff; font-size: 15px; }
+  button { padding: 10px 14px; border-radius: 9px; border: 0; background: #6a4cff; color: #fff; font-weight: 700; cursor: pointer; font-size: 14px; }
+  button.alt { background: #2c2650; } button.warn { background: #b3261e; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .games { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+  .games button.active { background: #ffb300; color: #201600; }
+  a { color: #9fd0ff; word-break: break-all; }
+  #feed div { font-size: 13px; padding: 3px 0; border-bottom: 1px solid #2c2650; }
+  .muted { opacity: .8; font-size: 13px; }
+  label { font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Myanmar Live Studio — Dashboard</h1>
+  <div class="card" id="createCard">
+    <h2>Room ဖန်တီးရန်</h2>
+    <div class="row"><input id="username" placeholder="TikTok username (ဥပမာ aicreater999)" style="flex:1"><button id="createBtn">Room ဖန်တီးမယ်</button></div>
+    <p class="muted">Google login မလို၊ license မလို၊ watermark မပါ၊ အချိန်ကန့်သတ်ချက် မရှိပါ။</p>
+  </div>
+  <div id="panel" style="display:none">
+    <div class="card">
+      <h2>Overlay Link (LIVE Studio / OBS / ဖုန်းထဲ ထည့်ရန်)</h2>
+      <div class="row"><a id="overlayLink" href="#" target="_blank"></a><button class="alt" id="copyBtn">Copy</button></div>
+      <p class="muted">ဖုန်း 9:16 အတွက် link ကို Mobile gaming မှာ ဖွင့်ပါ။ PC 16:9 ဆိုရင် link နောက်မှာ ?ratio=16:9 ထည့်ပါ။</p>
+      <h2>TikTok ချိတ်ရန်</h2>
+      <p class="muted">အရင် TikTok LIVE ကို စတင်ပါ (Mobile gaming → Go LIVE)၊ ပြီးမှ ချိတ်ပါ။</p>
+      <div class="row"><input id="ttUser" placeholder="username (@ မပါ)"><button id="connectBtn">TikTok ချိတ်မယ်</button><button class="warn" id="disconnectBtn">ဖြုတ်မယ်</button></div>
+      <p id="ttStatus" class="muted"></p>
+    </div>
+    <div class="card">
+      <h2>ဂိမ်း ရွေးရန် (live မပြတ်ဘဲ ပြောင်းလို့ရတယ်)</h2>
+      <div class="games" id="games"></div>
+      <div class="row" style="margin-top:10px">
+        <button class="alt" id="resetBtn">အမှတ် ရှင်းမယ်</button>
+        <button class="alt" id="clearBtn">ကြည့်သူ ရှင်းမယ်</button>
+        <button class="alt" id="eliminateBtn">Survival အလှည့်ပြီးမယ်</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>ပန်းတိုင် / မေးခွန်း / Boss</h2>
+      <div class="row"><input id="goalLabel" placeholder="ပန်းတိုင်အမည်"><input id="goalTarget" type="number" placeholder="ပန်းတိုင် ပမာဏ" style="width:130px"><button id="goalBtn">သတ်မှတ်မယ်</button></div>
+      <div class="row" style="margin-top:8px"><input id="quizQ" placeholder="မေးခွန်း" style="flex:1"><input id="quizA" placeholder="အဖြေမှန်"><button id="quizBtn">မေးခွန်း တင်မယ်</button></div>
+      <div class="row" style="margin-top:8px"><button class="alt" id="numberBtn">ဂဏန်း အလှည့်သစ်</button><button class="alt" id="bossBtn">Boss HP ပြန်ဖြည့်မယ်</button></div>
+    </div>
+    <div class="card">
+      <h2>အသံ / Sound Pad</h2>
+      <div class="row">
+        <button class="alt" data-sound="gong">မောင်း</button>
+        <button class="alt" data-sound="clap">လက်ခုပ်</button>
+        <button class="alt" data-sound="fanfare">အောင်ပွဲ</button>
+        <button class="alt" data-sound="splash">ရေပက်</button>
+        <button class="alt" data-sound="bell">ခေါင်းလောင်း</button>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <label><input type="checkbox" id="bgmChk"> BGM</label>
+        <label><input type="checkbox" id="ttsChk" checked> မြန်မာ အသံ (TTS)</label>
+        <label><input type="checkbox" id="safeChk" checked> TikTok လုံခြုံ mode</label>
+      </div>
+      <p class="muted">Overlay မှာ “အသံဖွင့်ရန်” ကို တစ်ခါ နှိပ်ထားရပါမယ်။ TTS က device မှာ မြန်မာ voice ရှိမှ အသံထွက်ပါမယ်။</p>
+    </div>
+    <div class="card">
+      <h2>စမ်းသပ်ရန် (Sim)</h2>
+      <div class="row"><input id="simName" placeholder="နာမည်" value="မေသူ"><input id="simText" placeholder="Comment စာသား" value="1" style="flex:1"><button id="simChatBtn">Comment ပို့မယ်</button></div>
+      <div class="row" style="margin-top:8px">
+        <select id="simGift"><option value="နှင်းဆီ|1">နှင်းဆီ (1)</option><option value="ပန်းစည်း|30">ပန်းစည်း (30)</option><option value="သရဖူ|199">သရဖူ (199)</option><option value="ခြင်္သေ့|29999">ခြင်္သေ့ (29,999)</option></select>
+        <button id="simGiftBtn">Gift ပို့မယ်</button><button class="alt" id="simLikeBtn">Like</button><button class="alt" id="simFollowBtn">Follow</button><button class="alt" id="simJoinBtn">ဝင်လာသူ</button>
+        <label><input type="checkbox" id="botsChk"> Demo bots</label>
+      </div>
+    </div>
+    <div class="card"><h2>အခြေအနေ</h2><p id="stats" class="muted"></p><div id="feed"></div></div>
+  </div>
+  <p class="muted"><a href="/guide">သုံးနည်း လမ်းညွှန်</a> · <a href="/o/demo" target="_blank">Demo overlay</a></p>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+let roomId = new URLSearchParams(location.search).get('room') || (location.pathname.includes('control') ? 'main' : '');
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+async function post(path, body) { const r = await fetch(path, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body || {}) }); return r.json().catch(() => ({})); }
+const api = p => `/api/rooms/${encodeURIComponent(roomId)}${p}`;
+
+$('createBtn').onclick = async () => {
+  const r = await post('/api/rooms', { username: $('username').value });
+  location.search = '?room=' + encodeURIComponent(r.id);
+};
+function showPanel() {
+  if (!roomId) return;
+  $('createCard').style.display = 'none'; $('panel').style.display = 'block';
+  const link = location.origin + (roomId === 'main' ? '/overlay' : '/o/' + roomId);
+  $('overlayLink').href = link; $('overlayLink').textContent = link;
+  const es = new EventSource(api('/events'));
+  es.onmessage = e => { const m = JSON.parse(e.data); if (m.type === 'state') render(m.state); };
+}
+function render(s) {
+  $('games').innerHTML = s.games.map(g => `<button data-game="${g.id}" class="${g.id === s.game ? 'active' : ''}">${esc(g.label)}</button>`).join('');
+  document.querySelectorAll('[data-game]').forEach(b => b.onclick = () => post(api('/control'), { action: 'setGame', game: b.dataset.game }));
+  $('ttStatus').textContent = `TikTok: ${s.tiktok.status}${s.tiktok.username ? ' @' + s.tiktok.username : ''}${s.tiktok.error ? ' — ' + s.tiktok.error : ''}`;
+  if (s.username && !$('ttUser').value) $('ttUser').value = s.username;
+  $('stats').textContent = `ကြည့်သူ ${s.viewers.length} · Like ${s.likes.toLocaleString()} · Follow ${s.follows} · ပန်းတိုင် ${s.goal.current}/${s.goal.target} · ထိပ်ဆုံး: ${s.donors.map(d => d.name + ' ' + d.gifts).join(', ') || 'မရှိ'}`;
+  $('feed').innerHTML = s.feed.slice(-10).reverse().map(f => `<div><b>${esc(f.name)}</b> ${esc(f.text)}</div>`).join('');
+  $('bgmChk').checked = s.bgm; $('ttsChk').checked = s.tts; $('safeChk').checked = s.safeMode;
+}
+$('copyBtn').onclick = () => navigator.clipboard?.writeText($('overlayLink').href);
+$('connectBtn').onclick = () => post(api('/connect'), { username: $('ttUser').value });
+$('disconnectBtn').onclick = () => post(api('/disconnect'));
+$('resetBtn').onclick = () => post(api('/control'), { action: 'resetScores' });
+$('clearBtn').onclick = () => post(api('/control'), { action: 'clearViewers' });
+$('eliminateBtn').onclick = () => post(api('/control'), { action: 'eliminate' });
+$('goalBtn').onclick = () => post(api('/control'), { action: 'setGoal', label: $('goalLabel').value, target: Number($('goalTarget').value) || 1000 });
+$('quizBtn').onclick = () => post(api('/control'), { action: 'quiz', question: $('quizQ').value, answer: $('quizA').value, choices: [$('quizA').value] });
+$('numberBtn').onclick = () => post(api('/control'), { action: 'numberNew' });
+$('bossBtn').onclick = () => post(api('/control'), { action: 'bossReset', hp: 500 });
+document.querySelectorAll('[data-sound]').forEach(b => b.onclick = () => post(api('/control'), { action: 'sound', sound: b.dataset.sound }));
+$('bgmChk').onchange = e => post(api('/control'), { action: 'bgm', on: e.target.checked });
+$('ttsChk').onchange = e => post(api('/control'), { action: 'tts', on: e.target.checked });
+$('safeChk').onchange = e => post(api('/control'), { action: 'safeMode', on: e.target.checked });
+const simName = () => $('simName').value || 'ပရိသတ်';
+$('simChatBtn').onclick = () => post(api('/sim'), { kind: 'chat', id: 'sim_' + simName(), name: simName(), text: $('simText').value });
+$('simGiftBtn').onclick = () => { const [gift, d] = $('simGift').value.split('|'); post(api('/sim'), { kind: 'gift', id: 'sim_' + simName(), name: simName(), gift, diamonds: Number(d), count: 1 }); };
+$('simLikeBtn').onclick = () => post(api('/sim'), { kind: 'like', id: 'sim_' + simName(), name: simName(), count: 10 });
+$('simFollowBtn').onclick = () => post(api('/sim'), { kind: 'follow', id: 'sim_' + simName(), name: simName() });
+$('simJoinBtn').onclick = () => post(api('/sim'), { kind: 'join', id: 'sim_' + simName(), name: simName() });
+let botTimer = null;
+$('botsChk').onchange = e => {
+  clearInterval(botTimer);
+  if (!e.target.checked) return;
+  const names = ['မေသူ', 'ကိုဖြိုး', 'အေးမြတ်', 'သက်ထား', 'ကျော်ကျော်', 'နှင်းနှင်း', 'စိုးစိုး', 'ဖြူဖြူ'];
+  const lines = ['1', '2', 'အရမ်းမိုက်တယ်', 'ရန်ကုန်', 'မန္တလေး', '50', 'ဘယ်', 'ညာ', 'နေပြည်တော်'];
+  botTimer = setInterval(() => {
+    const name = names[Math.floor(Math.random() * names.length)];
+    const r = Math.random();
+    if (r < .65) post(api('/sim'), { kind: 'chat', id: 'bot_' + name, name, text: lines[Math.floor(Math.random() * lines.length)] });
+    else if (r < .85) post(api('/sim'), { kind: 'like', id: 'bot_' + name, name, count: 5 });
+    else post(api('/sim'), { kind: 'gift', id: 'bot_' + name, name, gift: 'နှင်းဆီ', diamonds: 1, count: 1 });
+  }, 1800);
+};
+showPanel();
+</script>
+</body>
+</html>
