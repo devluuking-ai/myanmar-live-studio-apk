@@ -7,5 +7,5 @@ set_target_properties(node PROPERTIES IMPORTED_LOCATION
 
 add_library(native-lib SHARED native-lib.cpp)
 
-target_include_directories(native-lib PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(native-lib PRIVATE ${CMAKE_SOURCE_DIR}/include/node)
 target_link_libraries(native-lib node log)
