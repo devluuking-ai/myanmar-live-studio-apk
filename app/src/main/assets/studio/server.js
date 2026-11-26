@@ -22,11 +22,19 @@ const PUB = path.join(ROOT, 'public');
 const PORT = Number(process.env.PORT || 3000);
 
 export const GAMES = [
+  { id: 'flagbattle', label: 'နိုင်ငံအလံ တိုက်ပွဲ', how: 'ကိုယ့်နိုင်ငံကုဒ် (MM, TH, SG, JP…) Comment ရေးပါ၊ Gift နဲ့ အလံဘောလုံး ကြီးလာမယ်' },
+  { id: 'garden', label: 'ဥယျာဉ် ကာကွယ်ပွဲ', how: 'Comment 1–5 နဲ့ တန်းရွေးပါ၊ Gift နဲ့ ဘီလူးတွေကို တိုက်ပါ' },
+  { id: 'lethwei', label: 'လက်ဝှေ့ပွဲ', how: 'Comment 1 / 2 နဲ့ အသင်းရွေးပါ၊ Gift နဲ့ ထိုး/ကန်/ဒူး/ခေါင်းတိုက်ပါ' },
+  { id: 'slap', label: 'ပါးရိုက်ပွဲ', how: 'Comment 1 / 2 နဲ့ အသင်းရွေးပါ၊ Gift နဲ့ ပါးရိုက်ပါ' },
+  { id: 'car', label: 'ကားပြိုင်', how: 'Comment / Like နဲ့ ကားကို အရှိန်တင်ပါ' },
+  { id: 'soundtruck', label: 'အသံထရပ် တိုက်ပွဲ', how: 'Comment 1 / 2 နဲ့ အသင်းရွေးပါ၊ Gift နဲ့ စပီကာ ထပ်ပါ' },
   { id: 'tug', label: 'လွန်ဆွဲ', how: 'Comment မှာ 1 (အနီ) သို့မဟုတ် 2 (အပြာ) ရေးပြီး အသင်းကို အားဖြည့်ပါ' },
+  { id: 'partytruck', label: 'ပွဲတော် ထရပ်', how: 'Comment ရေးရင် ထရပ်ပေါ် တက်ကမယ်၊ Gift နဲ့ VIP ရွှေအကသမား ဖြစ်မယ်' },
+  { id: 'monster', label: 'ဘီလူးကြီး တိုက်ပွဲ', how: 'Comment = ထိချက် ၁၊ Gift = ထိချက်အကြီး — အတူချကြမယ်' },
+  { id: 'boatrace', label: 'အင်းလေး လှေပြိုင်', how: 'Comment 1–4 နဲ့ လှေရွေးပါ၊ Gift နဲ့ လှေကို ရှေ့တွန်းပါ' },
   { id: 'temple', label: 'ဘုရားဖူး', how: 'Comment ရေးရင် ခုံနေရာ ရမယ်၊ Gift ပို့ရင် ပူဇော်မှု ပေါ်မယ်' },
   { id: 'pagoda', label: 'စေတီဖူး', how: 'နေ့/ည အလိုက် scene ပြောင်းတယ်၊ Comment ရေးပြီး ဝင်ထိုင်ပါ' },
   { id: 'race', label: 'အပြေးပြိုင်', how: 'Comment / Like နဲ့ ကိုယ့်အပြေးသမားကို ရှေ့တိုးပါ' },
-  { id: 'car', label: 'ကားပြိုင်', how: 'Comment / Like နဲ့ ကားကို အရှိန်တင်ပါ' },
   { id: 'horse', label: 'မြင်းပြိုင်', how: 'Comment / Like နဲ့ မြင်းကို အားဖြည့်ပါ' },
   { id: 'boat', label: 'လှေပြိုင်', how: 'Comment / Like နဲ့ လှေကို ရှေ့တွန်းပါ' },
   { id: 'marble', label: 'ဂေါ်လီပြိုင်', how: 'Comment / Like နဲ့ ဂေါ်လီကို လှိမ့်ပါ' },
@@ -40,7 +48,20 @@ export const GAMES = [
   { id: 'region', label: 'ဒေသပြိုင်', how: 'ကိုယ့်ဒေသနာမည်ကို Comment ရေးပါ — ဥပမာ ရန်ကုန်၊ မန္တလေး၊ ရှမ်း' },
   { id: 'survival', label: 'အသက်ရှင်ကျန်', how: 'Comment ဆက်ရေးနေသူပဲ ကျန်မယ် — အလှည့်တိုင်း အနည်းဆုံးသူ ထွက်ရမယ်' },
 ];
-const RACE_GAMES = new Set(['race', 'car', 'horse', 'boat', 'marble']);
+const RACE_GAMES = new Set(['race', 'car', 'horse', 'boat', 'marble', 'boatrace']);
+const VERSUS_GAMES = new Set(['lethwei', 'slap', 'soundtruck']);
+export const COUNTRIES = [
+  { code: 'MM', name: 'Myanmar', keys: ['mm', 'myanmar', 'မြန်မာ'] },
+  { code: 'TH', name: 'Thailand', keys: ['th', 'thailand', 'ထိုင်း'] },
+  { code: 'SG', name: 'Singapore', keys: ['sg', 'singapore', 'စင်ကာပူ'] },
+  { code: 'JP', name: 'Japan', keys: ['jp', 'japan', 'ဂျပန်'] },
+  { code: 'KR', name: 'Korea', keys: ['kr', 'korea', 'ကိုရီးယား'] },
+  { code: 'MY', name: 'Malaysia', keys: ['my', 'malaysia', 'မလေးရှား'] },
+  { code: 'CN', name: 'China', keys: ['cn', 'china', 'တရုတ်'] },
+  { code: 'US', name: 'USA', keys: ['us', 'usa', 'america'] },
+  { code: 'UK', name: 'UK', keys: ['uk', 'england'] },
+  { code: 'AE', name: 'Dubai', keys: ['ae', 'dubai', 'ဒူဘိုင်း'] },
+];
 export const REGIONS = ['ရန်ကုန်', 'မန္တလေး', 'နေပြည်တော်', 'ရှမ်း', 'ကချင်', 'ကရင်', 'မွန်', 'ရခိုင်', 'ဧရာဝတီ', 'ပဲခူး', 'စစ်ကိုင်း', 'မကွေး', 'တနင်္သာရီ', 'ကယား', 'ချင်း'];
 const LANE_NAMES = ['အနီ', 'အပြာ', 'အစိမ်း', 'အဝါ', 'ခရမ်း', 'လိမ္မော်'];
 
@@ -60,6 +81,10 @@ export function createRoomState(id, username = '') {
     quiz: { question: 'မြန်မာနိုင်ငံရဲ့ မြို့တော်က ဘယ်မြို့လဲ?', choices: ['ရန်ကုန်', 'နေပြည်တော်', 'မန္တလေး'], answer: 'နေပြည်တော်', open: true, winner: '' },
     number: { target: 1 + Math.floor(Math.random() * 100), best: null, lastHint: '' },
     boss: { hp: 500, max: 500 }, feathers: 0, penalty: { goals: 0, saves: 0, last: '' },
+    countries: Object.fromEntries(COUNTRIES.map(c => [c.code, 0])),
+    garden: { hp: 100, kills: 0, wave: 1 },
+    settings: { banner: 'Gift ပို့ပြီး ကိုယ့်အသင်းကို အားပေးပါ', teamA: 'ရန်ကုန်', teamB: 'မန္တလေး', roundSec: 120, winScore: 30, backdrop: '' },
+    mapping: { gifts: {}, chatA: ['1'], chatB: ['2'] }, round: 1,
     tiktok: { status: 'idle', username: '', error: '', want: false, retries: 0 },
     clients: new Set(), conn: null,
   };
@@ -69,7 +94,7 @@ function ensureViewer(room, ev) {
   const id = clean(ev.id || ev.name || 'viewer', 80) || 'viewer';
   let v = room.viewers.get(id);
   if (!v) {
-    v = { id, name: clean(ev.name, 30) || 'ကြည့်သူ', avatar: clean(ev.avatar, 300), team: hashTeam(id), lane: ([...id].reduce((a, c) => a + c.charCodeAt(0), 0) % room.lanes.length), score: 0, gifts: 0, chats: 0, climb: 0, alive: true, region: '', joinedAt: Date.now() };
+    v = { id, name: clean(ev.name, 30) || 'ကြည့်သူ', avatar: clean(ev.avatar, 300), team: hashTeam(id), lane: ([...id].reduce((a, c) => a + c.charCodeAt(0), 0) % room.lanes.length), score: 0, gifts: 0, chats: 0, climb: 0, alive: true, region: '', country: '', vip: false, joinedAt: Date.now() };
     room.viewers.set(id, v);
   }
   if (ev.name) v.name = clean(ev.name, 30);
@@ -89,6 +114,8 @@ export function publicState(room) {
     lanes: room.lanes, regions: room.regions, quiz: room.quiz,
     number: { best: room.number.best, lastHint: room.number.lastHint },
     boss: room.boss, feathers: room.feathers, penalty: room.penalty,
+    countries: room.countries, countryList: COUNTRIES, garden: room.garden,
+    settings: room.settings, mapping: room.mapping, round: room.round,
     tiktok: { status: room.tiktok.status, username: room.tiktok.username, error: room.tiktok.error },
   };
 }
@@ -111,7 +138,27 @@ export function applyEvent(room, ev) {
     v.chats++; v.score += 1;
     room.feed.push({ name: v.name, text, at: Date.now() });
     const t = text.trim();
-    if (room.game === 'tug' || room.game === 'thingyan') {
+    const tl = t.toLowerCase();
+    if (room.game === 'flagbattle') {
+      const c = COUNTRIES.find(x => x.keys.some(k => tl === k || tl.includes(k)));
+      if (c) { v.country = c.code; room.countries[c.code]++; }
+      else if (v.country) room.countries[v.country]++;
+    } else if (room.game === 'garden') {
+      room.garden.kills++; room.garden.wave = 1 + Math.floor(room.garden.kills / 20);
+      fx(room, { kind: 'shot', name: v.name, row: /^[1-5]$/.test(t) ? Number(t) : 0 });
+    } else if (VERSUS_GAMES.has(room.game)) {
+      if (room.mapping.chatA.some(k => tl === k || tl.includes(k)) || t.includes(room.settings.teamA)) { v.team = 'a'; room.scores.a++; }
+      else if (room.mapping.chatB.some(k => tl === k || tl.includes(k)) || t.includes(room.settings.teamB)) { v.team = 'b'; room.scores.b++; }
+      else room.scores[v.team]++;
+    } else if (room.game === 'partytruck') {
+      fx(room, { kind: 'rider', name: v.name });
+    } else if (room.game === 'boatrace') {
+      if (/^[1-4]$/.test(t)) v.lane = Number(t) - 1;
+      room.lanes[v.lane % 4].pos += 1;
+    } else if (room.game === 'monster') {
+      room.boss.hp = Math.max(0, room.boss.hp - 1);
+      if (room.boss.hp === 0) fx(room, { kind: 'bossDown', say: 'ဘီလူးကြီးကို အနိုင်ရပါပြီ' });
+    } else if (room.game === 'tug' || room.game === 'thingyan') {
       if (t === '1' || t.includes('အနီ')) { v.team = 'a'; room.scores.a++; }
       else if (t === '2' || t.includes('အပြာ')) { v.team = 'b'; room.scores.b++; }
       else room.scores[v.team]++;
@@ -160,23 +207,33 @@ export function applyEvent(room, ev) {
     room.likes += n;
     const milestone = Math.floor(room.likes / 1000);
     if (milestone > room.likeMilestone) { room.likeMilestone = milestone; fx(room, { kind: 'milestone', likes: room.likes, say: `Like ${room.likes.toLocaleString()} ပြည့်ပါပြီ` }); }
-    if (RACE_GAMES.has(room.game)) room.lanes[v.lane].pos += Math.min(5, Math.ceil(n / 5));
+    if (room.game === 'flagbattle') room.countries[v.country || 'MM'] += 1;
+    else if (room.game === 'garden') { room.garden.kills += Math.min(5, Math.ceil(n / 5)); room.garden.wave = 1 + Math.floor(room.garden.kills / 20); }
+    else if (room.game === 'monster') room.boss.hp = Math.max(0, room.boss.hp - Math.min(5, Math.ceil(n / 5)));
+    else if (VERSUS_GAMES.has(room.game)) room.scores[v.team] += 1;
+    else if (RACE_GAMES.has(room.game)) room.lanes[v.lane % (room.game === 'boatrace' ? 4 : room.lanes.length)].pos += Math.min(5, Math.ceil(n / 5));
     else if (room.game === 'peacock') room.feathers = Math.min(24, room.feathers + 1);
     else if (room.game === 'tug' || room.game === 'thingyan') room.scores[v.team] += 1;
   } else if (kind === 'gift') {
     const v = ensureViewer(room, ev);
-    const value = clamp(ev.diamonds || 1, 1, 100000) * clamp(ev.count || 1, 1, 999);
     const giftName = clean(ev.gift || 'လက်ဆောင်', 40);
+    const mapped = room.mapping.gifts[giftName.toLowerCase()];
+    const value = (mapped ? clamp(mapped, 1, 100000) : clamp(ev.diamonds || 1, 1, 100000)) * clamp(ev.count || 1, 1, 999);
     v.gifts += value; v.score += value;
     room.goal.current += value;
     if (!room.goal.celebrated && room.goal.current >= room.goal.target) { room.goal.celebrated = true; fx(room, { kind: 'goalReached', say: 'ပန်းတိုင် ပြည့်ပါပြီ' }); }
-    if (room.game === 'boss') { room.boss.hp = Math.max(0, room.boss.hp - Math.max(1, value)); if (room.boss.hp === 0) fx(room, { kind: 'bossDown', say: 'Boss ကို အနိုင်ရပါပြီ' }); }
+    if (room.game === 'flagbattle') { const code = v.country || 'MM'; room.countries[code] += Math.max(1, Math.ceil(value / 5)); if (value >= 500) fx(room, { kind: 'titan', name: v.name, code, say: `${v.name} TITAN MODE` }); }
+    else if (room.game === 'garden') { room.garden.kills += Math.max(1, Math.ceil(value / 10)); room.garden.wave = 1 + Math.floor(room.garden.kills / 20); }
+    else if (room.game === 'partytruck') { if (value >= 50) v.vip = true; }
+    else if (VERSUS_GAMES.has(room.game)) room.scores[v.team] += Math.max(1, Math.ceil(value / 10));
+    else if (room.game === 'boss' || room.game === 'monster') { room.boss.hp = Math.max(0, room.boss.hp - Math.max(1, value)); if (room.boss.hp === 0) fx(room, { kind: 'bossDown', say: 'Boss ကို အနိုင်ရပါပြီ' }); }
     else if (room.game === 'climb') v.climb += Math.max(1, Math.ceil(value / 5));
-    else if (RACE_GAMES.has(room.game)) room.lanes[v.lane].pos += Math.max(1, Math.ceil(value / 5));
+    else if (RACE_GAMES.has(room.game)) room.lanes[v.lane % (room.game === 'boatrace' ? 4 : room.lanes.length)].pos += Math.max(1, Math.ceil(value / 5));
     else if (room.game === 'tug' || room.game === 'thingyan') room.scores[v.team] += Math.max(1, Math.ceil(value / 10));
     fx(room, { kind: 'gift', name: v.name, gift: giftName, value, say: room.tts ? `${v.name} က ${giftName} ပို့လို့ ကျေးဇူးတင်ပါတယ်` : '' });
   } else if (kind === 'follow') {
     const v = ensureViewer(room, ev); room.follows++;
+    if (room.game === 'partytruck') v.vip = true;
     fx(room, { kind: 'follow', name: v.name, say: room.tts ? `${v.name} Follow လုပ်လို့ ကျေးဇူးတင်ပါတယ်` : '' });
   } else if (kind === 'share') {
     const v = ensureViewer(room, ev); room.shares++;
@@ -189,7 +246,16 @@ function applyControl(room, m) {
   switch (m.action) {
     case 'setGame': if (GAMES.some(g => g.id === m.game)) room.game = m.game; break;
     case 'setGoal': room.goal = { label: clean(m.label, 40) || 'ပန်းတိုင်', target: clamp(m.target, 1, 10000000), current: room.goal.current, celebrated: room.goal.current >= clamp(m.target, 1, 10000000) }; break;
-    case 'resetScores': room.scores = { a: 0, b: 0 }; room.lanes.forEach(l => l.pos = 0); room.regions = Object.fromEntries(REGIONS.map(r => [r, 0])); room.feathers = 0; room.penalty = { goals: 0, saves: 0, last: '' }; room.boss = { hp: room.boss.max, max: room.boss.max }; for (const v of room.viewers.values()) { v.score = 0; v.climb = 0; v.chats = 0; v.alive = true; } break;
+    case 'resetScores': room.scores = { a: 0, b: 0 }; room.lanes.forEach(l => l.pos = 0); room.regions = Object.fromEntries(REGIONS.map(r => [r, 0])); room.feathers = 0; room.penalty = { goals: 0, saves: 0, last: '' }; room.boss = { hp: room.boss.max, max: room.boss.max }; room.countries = Object.fromEntries(COUNTRIES.map(c => [c.code, 0])); room.garden = { hp: 100, kills: 0, wave: 1 }; for (const v of room.viewers.values()) { v.score = 0; v.climb = 0; v.chats = 0; v.alive = true; v.vip = false; } break;
+    case 'resetRound': room.scores = { a: 0, b: 0 }; room.lanes.forEach(l => l.pos = 0); room.countries = Object.fromEntries(COUNTRIES.map(c => [c.code, 0])); room.garden = { hp: 100, kills: 0, wave: 1 }; room.boss = { hp: room.boss.max, max: room.boss.max }; room.round++; break;
+    case 'setSettings': room.settings = { banner: clean(m.banner, 120) || room.settings.banner, teamA: clean(m.teamA, 30) || room.settings.teamA, teamB: clean(m.teamB, 30) || room.settings.teamB, roundSec: clamp(m.roundSec, 15, 3600), winScore: clamp(m.winScore, 1, 100000), backdrop: clean(m.backdrop, 40) }; break;
+    case 'setMapping': {
+      const gifts = {};
+      if (m.gifts && typeof m.gifts === 'object') for (const [k, val] of Object.entries(m.gifts).slice(0, 40)) { const key = clean(k, 40).toLowerCase(); if (key) gifts[key] = clamp(val, 1, 100000); }
+      const kw = a => Array.isArray(a) ? a.slice(0, 10).map(x => clean(x, 30).toLowerCase()).filter(Boolean) : [];
+      room.mapping = { gifts, chatA: kw(m.chatA).length ? kw(m.chatA) : ['1'], chatB: kw(m.chatB).length ? kw(m.chatB) : ['2'] };
+      break;
+    }
     case 'clearViewers': room.viewers.clear(); room.feed = []; break;
     case 'quiz': room.quiz = { question: clean(m.question, 160), choices: Array.isArray(m.choices) ? m.choices.slice(0, 4).map(c => clean(c, 60)) : [], answer: clean(m.answer, 60), open: true, winner: '' }; break;
     case 'numberNew': room.number = { target: 1 + Math.floor(Math.random() * 100), best: null, lastHint: 'အလှည့်သစ် စပါပြီ' }; break;

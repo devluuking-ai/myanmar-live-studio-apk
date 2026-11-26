@@ -1,1 +1,1 @@
-{"name":"myanmar-live-studio-apk-runtime","private":true,"type":"module","version":"1.0.0"}
+{"dependencies":{"ttl-live":"file:./ttl-live"},"description":"Open-source TikTok LIVE interactive games studio for Myanmar creators — dashboard, overlay link for LIVE Studio/OBS/phone, viewer games driven by comment, like and gift.","engines":{"node":">=22"},"license":"MIT","name":"myanmar-live-studio","scripts":{"start":"node server.js","test":"node --test"},"type":"module","version":"3.0.0"}
