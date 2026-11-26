@@ -119,8 +119,8 @@ class MainActivity : AppCompatActivity() {
                 runOnUiThread {
                     serverReady = true
                     statusText.text = "အဆင်သင့် — Dashboard မှာ ဂိမ်းရွေး၊ TikTok LIVE စပြီး ချိတ်ပါ"
-                    showView.loadUrl("http://127.0.0.1:3000/overlay")
-                    dashView.loadUrl("http://127.0.0.1:3000/control")
+                    showView.loadUrl("http://127.0.0.1:3001/overlay")
+                    dashView.loadUrl("http://127.0.0.1:3001/control")
                 }
             },
             onError = { msg -> runOnUiThread { statusText.text = msg } }

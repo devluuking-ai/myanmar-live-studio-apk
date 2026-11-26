@@ -30,7 +30,7 @@ object NodeRuntime {
                 val dir = extractAssets(ctx)
                 Os.setenv("HOME", ctx.filesDir.absolutePath, true)
                 Os.setenv("TMPDIR", ctx.cacheDir.absolutePath, true)
-                Os.setenv("PORT", "3000", true)
+                Os.setenv("PORT", "3001", true)
                 Thread {
                     try {
                         val code = NodeBridge.startNodeWithArguments(
@@ -53,7 +53,7 @@ object NodeRuntime {
         Thread {
             for (i in 0 until 60) {
                 try {
-                    val conn = URL("http://127.0.0.1:3000/").openConnection() as HttpURLConnection
+                    val conn = URL("http://127.0.0.1:3001/").openConnection() as HttpURLConnection
                     conn.connectTimeout = 1000
                     conn.readTimeout = 1000
                     if (conn.responseCode == 200) {

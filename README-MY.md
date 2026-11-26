@@ -17,3 +17,4 @@ Termux မလိုဘဲ ဖုန်းထဲမှာပဲ run တဲ့ Tik
 - မြန်မာ TTS အတွက် ဖုန်းမှာ မြန်မာ voice ရှိရပါမယ်။
 - Graphics က 2D ပါ။ arm64 ဖုန်းတွေအတွက်ပါ။
 - Android 14+ မှာ RTMP က platform တစ်ခုပဲ လွှင့်နိုင်သေးပါတယ်။
+- App server က port **3001** သုံးပါတယ် (Stage Show APK က 3000 သုံးလို့ နှစ်ခုလုံး တစ်ပြိုင်နက် ဖွင့်ထားလို့ရအောင်ပါ)။ နောက် device ကနေ Dashboard ဖွင့်ချင်ရင် Wi-Fi တူတူမှာ `http://<phone-IP>:3001/control` ကို ဖွင့်ပါ။
